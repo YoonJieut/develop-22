@@ -14,7 +14,7 @@ class SimpleServer {
   // * 리터럴로 작성해왔던 createServer()가 작성되어 있는 것을 확인할 수 있다.
   start() {
     const server = http.createServer((req, res)=>{
-      res.writeHead(200, {'Content-Type' : 'text/plain'});
+      res.writeHead(200, {'Content-Type' : 'text/plain; charset=utf-8'});
       res.end('생성자 함수로 가동된 서버입니다.');
     });
     // 4. this port는 생성자 함수에서 받은 파라미터 값이다.
@@ -25,4 +25,18 @@ class SimpleServer {
   }
 }
 
-//
+// simpleserver 인스턴스 생성 시작
+const simpleApp = new SimpleServer(3000);
+simpleApp.start()
+
+const portRange = {
+  min : 3001,
+  max : 3005,
+}
+
+// 3001, 3002, 3003, ~3005 모두가 열렸다.
+// 각각의 역할으로 하는 포트를 만들어서 사용할 수 있다.
+for (let i = portRange.min; i < portRange.max; i++){
+  const app = new SimpleServer(i)
+  app.start();
+}
